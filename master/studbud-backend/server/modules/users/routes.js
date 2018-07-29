@@ -22,6 +22,13 @@ routes.get(
   UserController.currentUser
 );
 
+// @desc   Creates a new group with userId
+routes.post(
+  "/users/:userId/groups/new",
+  passport.authenticate("jwt", { session: false }),
+  UserController.createUserGroup
+);
+
 /*routes.post("/users/auth0", UserController.loginWithAuth0);
 routes.post("/users/:userId/groups/new", GroupController.createGroupMeetup);
 routes.get("/users/:userId/groups", GroupController.getGroupMeetups);*/

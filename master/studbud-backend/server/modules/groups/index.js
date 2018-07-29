@@ -1,5 +1,4 @@
-import GroupRoutes from './routes';
+import GroupRoutes from "./routes";
+import Group from "./model";
 
-export {
-  GroupRoutes
-};
+export { GroupRoutes, Group };

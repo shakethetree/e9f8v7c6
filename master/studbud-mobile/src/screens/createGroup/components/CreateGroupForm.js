@@ -77,6 +77,21 @@ const CreateGroupForm = ({
       }}
       paddingBottom={20}
     />
+    <Field
+      component={TextInputWithValidations}
+      name="location"
+      label="Location"
+      placeholder="Enter group location"
+      selectionColor={Colors.redColor}
+      containerStyle={styles.item}
+      inputStyle={{
+        width: undefined,
+        height: undefined,
+        paddingBottom: 5,
+        paddingLeft: 3
+      }}
+      paddingBottom={5}
+    />
 
     <View style={styles.buttonCreate}>
       <Button

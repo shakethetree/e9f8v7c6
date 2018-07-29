@@ -32,6 +32,20 @@ export const setCurrentUser = async decoded => {
   };
 };
 
+export const LOGOUT_ERROR = "LOGOUT_ERROR";
+
+export const logout = () => dispatch => {
+  // Remove token
+  try {
+    AsyncStorage.removeItem("jwtToken", err => {
+      setAuthToken(false);
+      return dispatch({ type: SET_CURRENT_USER, payload: {} });
+    });
+  } catch (e) {
+    return dispatch({ type: LOGOUT_ERROR });
+  }
+};
+
 export const SIGNUP = "SIGNUP";
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_ERROR = "SIGNUP_ERROR";

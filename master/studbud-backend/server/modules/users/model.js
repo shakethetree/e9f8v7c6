@@ -49,4 +49,21 @@ const UserSchema = new Schema(
   }
 };*/
 
+// Create a group and add it to the groups array in the group
+UserSchema.statics.addGroup = async function(id, args) {
+  const Group = mongoose.model("Group");
+
+  // Add the User ID to the group user element
+  // Keeps track of which user created the group
+  const group = await new Group({ ...args, user: id });
+
+  // Find user with the given ID
+  // Push the group id in the groups element
+  await this.findByIdAndUpdate(id, { $push: { groups: group.id } });
+
+  return {
+    group: await group.save()
+  };
+};
+
 export default mongoose.model("User", UserSchema);

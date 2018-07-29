@@ -1,5 +1,4 @@
-import UserRoutes from './routes';
+import UserRoutes from "./routes";
+import User from "./model";
 
-export {
-  UserRoutes,
-};
+export { UserRoutes, User };

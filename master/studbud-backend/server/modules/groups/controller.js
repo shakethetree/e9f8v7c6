@@ -1,5 +1,6 @@
 import Group from "./model";
 import { Meetup } from "../meetups";
+import { User } from "../users";
 
 export const createGroup = async (req, res) => {
   const { name, description, category } = req.body;
@@ -130,36 +131,121 @@ export const getGroupMeetups = async (req, res) => {
   }
 };
 
-export const getAllGroups = async (req, res) => {
-  /*const { userId } = req.params;
+/*export const getAllGroups = async (req, res) => {
+  Profile.find()
+    .populate({ model: "User", path: "user", select: "name avatar" })
+    .then(profile => {
+      if (!profile) {
+        return res.status(404).json({ error: "There are no profiles!" });
+      }
+      res.json(profile);
+    })
+    .catch(err => res.status(404).json(err));
+};
+*/
 
-  if(!userId) {
-    return res.status(400).json({ error: true, message: 'Group ID must be provided!' });
+// Get all groups under user
+export const getAllUserGroups = async (req, res) => {
+  const { userId } = req.params;
+
+  if (!userId) {
+    return res
+      .status(400)
+      .json({ error: true, message: "User ID must be provided!" });
   }
 
-  // Search to see if group exists
+  // Search to see if user exists
   const user = await User.findById(userId);
 
-  // If no group has the ID provided
-  if(!user) {
-    return res.status(400).json({ error: true, message: 'User does not exist.' });
-  }*/
+  // If no user has the ID provided
+  if (!user) {
+    return res
+      .status(400)
+      .json({ error: true, message: "User does not exist." });
+  }
 
   // If group ID exists, try to return meetups
-  /*try {
+  try {
     return res.status(200).json({
       error: false,
-      groups: await Group.find({ group: groupId }).populate('group', 'name')
+      groups: await Group.find({ _id: { $in: user.groups } })
     });
   } catch (e) {
-    return res.status(400).json({ error: true, message: 'Cannot fetch meetup' });
-  }*/
+    return res
+      .status(400)
+      .json({ error: true, message: "Cannot fetch groups" });
+  }
+
+  /*Group.find({ user: userId })
+    .then(groups => {
+      res.json(groups);
+    })
+    .catch(err => res.status(404).json(err));*/
 
   try {
-    return res.status(200).json({ groups: await Group.find({}) });
+    return res.status(200).json({ groups: await Group.find({ user: userId }) });
   } catch (e) {
     return res
       .status(e.status)
       .json({ error: true, message: "Error with Groups" });
   }
+};
+
+export const getGroupByID = async (req, res) => {
+  Group.findOne({ _id: req.params.group_id })
+    .then(group => {
+      if (!group) {
+        return res.status(404).json({ error: "Group does not exist!" });
+      }
+      res.json(group);
+    })
+    .catch(err => res.status(404).json(err));
+};
+
+export const deleteGroup = async (req, res) => {
+  const { groupId } = req.params;
+  /*meetup = await Meetup.findOne({ group: req.group.id });
+
+  while (meetup) {
+    Meetup.findOneAndRemove({ group: req.group.id });
+    meetup = await Meetup.findOne({ group: req.group.id });
+  }
+  Group.findOneAndRemove({ _id: req.group.id })
+    .then(() => res.json({ success: true }))
+    .catch(err => res.status(404).json(err));*/
+
+  Meetup.remove({ group: groupId }).then(() => {
+    Group.findOneAndRemove({ _id: groupId }).then(() =>
+      res.json({ success: true })
+    );
+  });
+};
+
+export const deleteMeetupFromGroup = async (req, res) => {
+  const { meetupId } = req.params;
+  const { groupId } = req.params;
+
+  Group.findOneAndUpdate(
+    { _id: groupId },
+    { $pull: { meetups: meetupId } }
+  ).then(group => res.json(group));
+
+  /*Meetup.findOne({ _id: meetupId })
+    .then(meetup => {
+      if (meetup) {
+        Group.findOneAndUpdate(
+          { _id: meetup.group },
+          { $pull: { meetups: meetupId } }
+        )
+          .then(() =>
+            Meetup.findOneAndRemove({ _id: meetupId }).then(() =>
+              res
+                .json({ success: true })
+                .catch(err => res.status(404).json(err))
+            )
+          )
+          .catch(err => res.status(404).json(err));
+      }
+    })
+    .catch(err => res.status(404).json(err));*/
 };

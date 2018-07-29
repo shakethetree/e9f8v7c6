@@ -13,6 +13,20 @@ routes.post(
   GroupController.createGroup
 );
 
+// @desc  Get all groups under user ID
+routes.get(
+  "/groups/:userId/all",
+  passport.authenticate("jwt", { session: false }),
+  GroupController.getAllUserGroups
+);
+
+// @desc  Get by group ID
+routes.get(
+  "/groups/:group_id",
+  passport.authenticate("jwt", { session: false }),
+  GroupController.getGroupByID
+);
+
 // @desc   Creates a new meetup with groupId
 routes.post(
   "/groups/:groupId/meetups/new",
@@ -27,7 +41,20 @@ routes.get(
   GroupController.getGroupMeetups
 );
 
-// @desc   Gets all groups
-routes.get("/groups", GroupController.getAllGroups);
+// @desc   Delete a group and its meetups
+routes.delete(
+  "/groups/:groupId",
+  passport.authenticate("jwt", { session: false }),
+  GroupController.deleteGroup
+);
+
+// @desc   Delete a meetup and remove it from group
+routes.delete(
+  "/groups/:groupId/:meetupId",
+  passport.authenticate("jwt", { session: false }),
+  GroupController.deleteMeetupFromGroup
+);
+
+// @desc delete group and meetups
 
 export default routes;

@@ -18,4 +18,11 @@ routes.get(
   MeetupController.getAllMeetups
 );
 
+// @desc   Delete a meetup
+routes.delete(
+  "/meetups/:meetupId",
+  passport.authenticate("jwt", { session: false }),
+  MeetupController.deleteMeetup
+);
+
 export default routes;

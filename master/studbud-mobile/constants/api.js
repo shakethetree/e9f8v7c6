@@ -5,10 +5,11 @@ import { AsyncStorage } from "react-native";
 
 //axios.defaults.baseURL = "http://192.168.1.20:3000/api";
 // might need to take out /app
-axios.defaults.baseURL = "http://192.168.1.6:5000/api/app";
+axios.defaults.baseURL = "http://192.168.1.24:5000/api/app";
 
 //const fakeGroupId = "5b35a4952e6b8e49c013b8a5";
 const fakeGroupId = "5b58f3bddb5991556887d023";
+const fakeUserId = "5b593cccbfc4ae4c60190ef1";
 
 class MeetupApi {
   constructor() {
@@ -43,11 +44,12 @@ class GroupApi {
   constructor() {
     //this.groupId = fakeGroupId;
     this.path = `/groups`;
+    this.testId = fakeUserId;
   }
 
-  async fetchAllGroups() {
+  async fetchAllGroups(userId) {
     try {
-      const { data } = await axios.get(this.path);
+      const { data } = await axios.get(`${this.path}/${this.testId}/all`);
 
       return data.groups;
     } catch (e) {
@@ -55,9 +57,11 @@ class GroupApi {
     }
   }
 
-  async createGroup(args) {
+  async createGroup(userId, { ...args }) {
     try {
-      const res = await axios.post(`${this.path}/new`, { ...args });
+      const res = await axios
+        .post(`/users/${userId}/groups/new`, { ...args })
+        .catch(err => res.status(404).json(err));
       console.log(res);
       return res;
     } catch (e) {
