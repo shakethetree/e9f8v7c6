@@ -55,7 +55,7 @@ UserSchema.statics.addGroup = async function(id, args) {
 
   // Add the User ID to the group user element
   // Keeps track of which user created the group
-  const group = await new Group({ ...args, user: id });
+  const group = await new Group({ ...args, owner: id });
 
   // Find user with the given ID
   // Push the group id in the groups element

@@ -43,7 +43,7 @@ class CreateGroupScreen extends Component {
   }
 
   _createGroup = async values => {
-    console.log("user id: ", this.props.loguser.user.id);
+    //console.log("user id: ", this.props.loguser.user.id);
     await this.props
       .createGroup(this.props.loguser.user.id, { ...values })
       .catch(err => res.status(404).json(err));
@@ -67,7 +67,6 @@ class CreateGroupScreen extends Component {
     }
     return (
       <View style={styles.root}>
-        <Text>Hello</Text>
         <CreateGroupForm createGroup={this._createGroup} />
       </View>
     );

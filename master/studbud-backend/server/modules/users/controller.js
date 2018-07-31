@@ -111,6 +111,23 @@ export const currentUser = async (req, res) => {
   });
 };
 
+export const getUserById = async (req, res) => {
+  User.findOne({ _id: req.params.userId })
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({ error: "User does not exist!" });
+      }
+      res.json({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        groups: user.groups,
+        avatar: user.avatar
+      });
+    })
+    .catch(err => res.status(404).json(err));
+};
+
 // Greate a group contained within a user
 export const createUserGroup = async (req, res) => {
   const { name, description, location } = req.body;
@@ -140,7 +157,7 @@ export const createUserGroup = async (req, res) => {
     return res
       .status(400)
       .json({ error: true, message: "Description must be a string!" });
-  } else if (description.length > 100) {
+  } else if (description.length > 256) {
     return res.status(400).json({
       error: true,
       message: "Description too long!"
@@ -168,13 +185,21 @@ export const createUserGroup = async (req, res) => {
       .json({ error: true, message: "User ID must be provided" });
   }
 
+  const groupFields = {};
+  //groupFields.owner = req.userId;
+  if (req.body.name) groupFields.name = req.body.name;
+  if (req.body.description) groupFields.description = req.body.description;
+  if (req.body.location) groupFields.location = req.body.location;
+
+  // Skills, split into array
+  if (typeof req.body.tags !== "undefined") {
+    groupFields.tags = req.body.tags.split(",");
+  }
+
   try {
-    const { group } = await User.addGroup(owner, {
-      name,
-      description,
-      location,
-      owner
-    }).catch(err => res.status(404).json(err));
+    const { group } = await User.addGroup(owner, groupFields).catch(err =>
+      res.status(404).json(err)
+    );
 
     return res.status(201).json({ error: false, group });
   } catch (e) {

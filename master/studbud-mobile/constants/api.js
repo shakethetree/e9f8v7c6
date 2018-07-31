@@ -2,10 +2,11 @@ import axios from "axios";
 import setAuthToken from "./setAuthToken";
 import jwt_decode from "jwt-decode";
 import { AsyncStorage } from "react-native";
+import { connect } from "react-redux";
 
 //axios.defaults.baseURL = "http://192.168.1.20:3000/api";
 // might need to take out /app
-axios.defaults.baseURL = "http://192.168.1.24:5000/api/app";
+axios.defaults.baseURL = "http://192.168.1.5:5000/api/app";
 
 //const fakeGroupId = "5b35a4952e6b8e49c013b8a5";
 const fakeGroupId = "5b58f3bddb5991556887d023";
@@ -13,14 +14,14 @@ const fakeUserId = "5b593cccbfc4ae4c60190ef1";
 
 class MeetupApi {
   constructor() {
-    this.groupId = fakeGroupId;
+    //this.groupId = fakeGroupId;
     // might need /app/groups
     this.path = `/groups/${this.groupId}/meetups`;
   }
 
-  async fetchGroupMeetups() {
+  async fetchGroupMeetups(groupId) {
     try {
-      const { data } = await axios.get(this.path);
+      const { data } = await axios.get(`/groups/${groupId}/meetups`);
 
       return data.meetups;
     } catch (e) {
@@ -28,9 +29,11 @@ class MeetupApi {
     }
   }
 
-  async createGroupMeetups(args) {
+  async createGroupMeetups(groupId, { ...args }) {
     try {
-      const res = await axios.post(`${this.path}/new`, { ...args });
+      const res = await axios.post(`/groups/${groupId}/meetups/new`, {
+        ...args
+      });
       console.log(res);
       return res;
     } catch (e) {
@@ -45,15 +48,29 @@ class GroupApi {
     //this.groupId = fakeGroupId;
     this.path = `/groups`;
     this.testId = fakeUserId;
+    //this.sweetid = this.getUser();
+    //console.log("Sweetid up hereee ", this.sweetid);
   }
 
   async fetchAllGroups(userId) {
-    try {
-      const { data } = await axios.get(`${this.path}/${this.testId}/all`);
+    if (!userId) {
+      try {
+        const result = await AsyncStorage.getItem("jwtToken");
+        const decoded = jwt_decode(result);
+        //console.log("yeeeehaw ", decoded.id);
+        const { data } = await axios.get(`${this.path}/${decoded.id}/all`);
+        return data.groups;
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        const { data } = await axios.get(`${this.path}/${userId}/all`);
 
-      return data.groups;
-    } catch (e) {
-      console.log(e);
+        return data.groups;
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
@@ -112,5 +129,33 @@ class UserApi {
       console.log(e);
     }
   }
+
+  async getUser(userId) {
+    try {
+      const { data } = await axios.get(`/users/${userId}`);
+      console.log("DATA IS::: ", data);
+      return data;
+    } catch (e) {
+      throw e;
+    }
+  }
 }
+
 export { UserApi };
+
+class ProfileApi {
+  constructor() {
+    this.path = `/profiles`;
+  }
+
+  async getUserProfile() {
+    try {
+      const res = await axios.get(`${this.path}`);
+      return res.data;
+    } catch (e) {
+      const emptyprof = {};
+      return emptyprof;
+    }
+  }
+}
+export { ProfileApi };

@@ -29,7 +29,10 @@ const styles = EStyleSheet.create({
   },
   loc: {
     justifyContent: "center",
-    flexDirection: "row"
+    flexDirection: "row",
+    justifyContent: "space-between"
+    //height: 15,
+    //backgroundColor: "blue"
     //fontSize: 12
     //paddingBottom: 2,
     //marginBottom: 2,

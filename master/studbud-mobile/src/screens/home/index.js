@@ -1,7 +1,5 @@
-import HomeScreen from './HomeScreen';
-import HomeReducer from './reducer';
+import HomeScreen from "./HomeScreen";
+import HomeReducer from "./reducer";
+import MeetupReducer from "./meetupreducer";
 
-export {
-  HomeScreen,
-  HomeReducer
-};
+export { HomeScreen, HomeReducer, MeetupReducer };

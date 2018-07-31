@@ -6,7 +6,11 @@ import { Button, Icon } from "native-base";
 import { TouchableOpacity } from "react-native";
 import { MaterialIcons, Foundation } from "@expo/vector-icons";
 // MaterialIcons old icon: add-circle
-import { CreateMeetupScreen, CreateGroupScreen } from "../screens";
+import {
+  CreateMeetupScreen,
+  CreateGroupScreen,
+  groupInfoPage
+} from "../screens";
 
 export default createStackNavigator(
   {
@@ -39,6 +43,20 @@ export default createStackNavigator(
       screen: CreateGroupScreen,
       navigationOptions: () => ({
         title: "Create a New Group",
+        headerStyle: {
+          backgroundColor: Colors.$mediumBlue,
+          height: 50
+        },
+        headerTitleStyle: {
+          fontSize: 15,
+          //fontColor: Colors.$whiteColor,
+          fontWeight: "400"
+        }
+      })
+    },
+    GroupInfo: {
+      screen: groupInfoPage,
+      navigationOptions: () => ({
         headerStyle: {
           backgroundColor: Colors.$mediumBlue,
           height: 50

@@ -3,36 +3,46 @@ import { Meetup } from "../meetups";
 import { User } from "../users";
 
 export const createGroup = async (req, res) => {
-  const { name, description, category } = req.body;
+  //const { name, description, location } = req.body;
 
-  if (!name) {
+  if (!req.body.name) {
     return res
       .status(400)
       .json({ error: true, message: "Name must be provided!" });
-  } else if (typeof name !== "string") {
+  } else if (typeof req.body.name !== "string") {
     return res
       .status(400)
       .json({ error: true, message: "Name must be a string!" });
-  } else if (name.length > 32) {
+  } else if (req.body.name.length > 32) {
     return res.status(400).json({ error: true, message: "Name too long!" });
   }
 
-  if (!description) {
+  if (!req.body.description) {
     return res
       .status(400)
       .json({ error: true, message: "Description must be provided!" });
-  } else if (typeof description !== "string") {
+  } else if (typeof req.body.description !== "string") {
     return res
       .status(400)
       .json({ error: true, message: "Description must be a string!" });
-  } else if (description.length > 256) {
+  } else if (req.body.description.length > 256) {
     return res.status(400).json({
       error: true,
       message: "Description must be 10 characters long!"
     });
   }
 
-  const newGroup = new Group({ name, description });
+  const groupFields = {};
+  if (req.body.name) groupFields.name = req.body.name;
+  if (req.body.description) groupFields.description = req.body.description;
+  if (req.body.location) groupFields.location = req.body.location;
+
+  // Skills, split into array
+  if (typeof req.body.tags !== "undefined") {
+    groupFields.tags = req.body.tags.split(",");
+  }
+
+  const newGroup = new Group(groupFields);
 
   try {
     return res.status(201).json({ group: await newGroup.save() });
@@ -70,7 +80,7 @@ export const createGroupMeetup = async (req, res) => {
     return res
       .status(400)
       .json({ error: true, message: "Description must be a string!" });
-  } else if (description.length > 100) {
+  } else if (description.length > 256) {
     return res.status(400).json({
       error: true,
       message: "Description too long!"

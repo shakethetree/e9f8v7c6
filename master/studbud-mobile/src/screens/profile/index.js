@@ -1,5 +1,4 @@
-import ProfileScreen from './ProfileScreen';
+import ProfileScreen from "./ProfileScreen";
+import ProfileReducer from "./reducer";
 
-export {
-  ProfileScreen
-};
+export { ProfileScreen, ProfileReducer };

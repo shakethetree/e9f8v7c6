@@ -85,7 +85,10 @@ class CreateMeetupScreen extends Component {
   //_changeDescription = description => this.setState({ description })
 
   _createMeetup = async values => {
-    await this.props.createMeetup(values);
+    await this.props.createMeetup(this.props.navigation.state.params.curgroup, {
+      ...values
+    });
+    this.props.navigation.state.params.onGoBack();
     this.props.navigation.goBack();
     /*const { title, description, date } = this.state;
 

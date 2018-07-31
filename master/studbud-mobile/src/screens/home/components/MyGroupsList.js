@@ -13,6 +13,11 @@ import PropTypes from "prop-types";
 import { setGroup } from "../../createGroup/actions";
 import { connect } from "react-redux";
 
+//mapping tags:
+/*{group.tags.map((tag, i) => {
+                        tag[i];
+                      })}*/
+
 const MyGroupsList = ({ groups, navigation, groupClicked }) => (
   <View style={styles.root}>
     <View style={styles.contentContainer}>

@@ -1,9 +1,16 @@
-import { LOGIN, LOGIN_SUCCESS, LOGIN_ERROR, SET_CURRENT_USER } from "./actions";
+import {
+  LOGIN,
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  SET_CURRENT_USER,
+  GET_USER
+} from "./actions";
 import { isEmpty } from "../../../constants/isEmpty";
 
 const initialState = {
   isAuthenticated: false,
-  user: {}
+  user: {},
+  fetcheduser: {}
 };
 
 export default function(state = initialState, action) {
@@ -13,6 +20,15 @@ export default function(state = initialState, action) {
         ...state,
         isAuthenticated: action.payload.name != null,
         user: action.payload
+      };
+    case `${GET_USER}_FULFILLED`:
+      return {
+        ...state,
+        fetcheduser: action.payload
+      };
+    case `${GET_USER}_REJECTED`:
+      return {
+        ...state
       };
     default:
       return state;

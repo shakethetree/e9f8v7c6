@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { Field, reduxForm } from "redux-form";
+import { Field, FieldArray, reduxForm } from "redux-form";
 import { Button } from "react-native-elements";
 
 import { TextInputWithValidations } from "../../../commons";
@@ -14,30 +14,24 @@ import {
 } from "react-native-elements";
 import TagInput from "react-native-tag-input";
 
-/*const tagInput = ({ input: { onChange, value, text, tag, ...restInput }, label, meta: { touched, error }, ...custom }) => {
+/*const tagInput = ({
+  input: { value, onChange ...restInput },
+  meta: { touched, error },
+  ...custom
+}) => {
   return (
-    <View>
-      <FormLabel>{label}</FormLabel>
-      <TagInput
-        {...restInput}
-        value={value}
-        onChange={value.onChange}
-        onChangeText={text}
-        editable={true}
-        labelExtractor={tag}
-        text={text}
-        />
-    </View>
-
-    
-     Field
-      component=tagInput
-      name="tags"
-      label="Tags"
-      text="Hello"
-    
-  )
-}*/
+    <Tags
+      initialText="Enter tags..."
+      //initialTags={["dog", "cat", "chicken"]}
+      onChangeTags={tags => console.log(tags)}
+      onTagPress={(index, tagLabel, event) =>
+        console.log(index, tagLabel, event)
+      }
+      
+    />
+    <TagsInput value={value || []} onChange={this.onChange.bind(this)} onlyUnique />
+  );
+};*/
 
 const CreateGroupForm = ({
   createGroup,
@@ -49,7 +43,7 @@ const CreateGroupForm = ({
     <Field
       component={TextInputWithValidations}
       name="name"
-      label="Group Title"
+      label="Group Name"
       placeholder="Name your group..."
       selectionColor={Colors.redColor}
       containerStyle={styles.item}
@@ -82,6 +76,22 @@ const CreateGroupForm = ({
       name="location"
       label="Location"
       placeholder="Enter group location"
+      selectionColor={Colors.redColor}
+      containerStyle={styles.item}
+      inputStyle={{
+        width: undefined,
+        height: undefined,
+        paddingBottom: 5,
+        paddingLeft: 3
+      }}
+      paddingBottom={5}
+    />
+
+    <Field
+      component={TextInputWithValidations}
+      name="tags"
+      label="Tags"
+      placeholder="Enter tags separated by commas"
       selectionColor={Colors.redColor}
       containerStyle={styles.item}
       inputStyle={{

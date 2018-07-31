@@ -5,3 +5,4 @@ export * from "./profile";
 export * from "./createMeetup";
 export * from "./createGroup";
 export * from "./auth";
+export * from "./groupInfo";

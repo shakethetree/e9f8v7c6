@@ -23,7 +23,7 @@ export const createGroup = (userId, { ...args }) => async dispatch => {
 
 export const setGroup = groupID => async dispatch => {
   try {
-    console.log("setting group to:", groupID);
+    //console.log("setting group to:", groupID);
     return dispatch({ type: SET_CURRENT_GROUP, payload: groupID });
   } catch (e) {
     return dispatch({ type: SET_GROUP_ERROR });

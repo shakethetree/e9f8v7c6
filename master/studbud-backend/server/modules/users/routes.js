@@ -22,6 +22,13 @@ routes.get(
   UserController.currentUser
 );
 
+// @desc    Return name and prof pic of user id
+routes.get(
+  "/users/:userId",
+  passport.authenticate("jwt", { session: false }),
+  UserController.getUserById
+);
+
 // @desc   Creates a new group with userId
 routes.post(
   "/users/:userId/groups/new",

@@ -18,6 +18,7 @@ export const login = args => async dispatch => {
     setAuthToken(data.token);
     console.log(data.token);
     const decoded = jwt_decode(data.token);
+    AsyncStorage.setItem("thisuserid", decoded.id);
     //console.log(decoded);
     return dispatch({ type: SET_CURRENT_USER, payload: decoded });
   } catch (e) {
@@ -60,3 +61,12 @@ export const signup = args => async dispatch => {
   }
   //return await dispatch(fetchMyGroups());
 };
+
+export const GET_USER = "GET_USER";
+
+// creates an action called fetchMyGroups
+// takes userid and returns an object
+export const getUser = userId => ({
+  type: GET_USER,
+  payload: userApi.getUser(userId)
+});
