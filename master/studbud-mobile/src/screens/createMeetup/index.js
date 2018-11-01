@@ -1,7 +1,6 @@
-import CreateMeetupScreen from './CreateMeetupScreen';
-import CreateMeetupReducer from './reducer';
+import CreateMeetupScreen from "./CreateMeetupScreen";
+import CreateMeetupReducer from "./reducer";
 
-export {
-   CreateMeetupScreen,
-   CreateMeetupReducer
-};
+export { CreateMeetupScreen, CreateMeetupReducer };
+
+//workingbranch2
