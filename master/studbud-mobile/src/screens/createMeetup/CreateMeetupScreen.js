@@ -22,7 +22,6 @@ import { setGroup } from "../createGroup/actions";
 import Colors from "../../../constants/Colors";
 import styles from "./styles/CreateMeetupScreen";
 
-//yes
 @reduxForm({
   form: "createMeetup",
   validate: createMeetupValidations
