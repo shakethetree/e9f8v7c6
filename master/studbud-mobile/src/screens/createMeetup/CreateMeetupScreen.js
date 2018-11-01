@@ -22,7 +22,11 @@ import { setGroup } from "../createGroup/actions";
 import Colors from "../../../constants/Colors";
 import styles from "./styles/CreateMeetupScreen";
 
+<<<<<<< HEAD
 //workingbranch
+=======
+//yes
+>>>>>>> workingbranch2
 @reduxForm({
   form: "createMeetup",
   validate: createMeetupValidations
